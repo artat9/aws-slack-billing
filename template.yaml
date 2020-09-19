@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Notify Slack every day of AWS billing
+
+Globals:
+  Function:
+    Timeout: 10
+
+Parameters:
+  SlackWebhookUrl:
+    Type: String
+    Default: "https://hooks.slack.com/services/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"
+  TZ:
+    Type: String
+    Default: Asia/Tokyo
+  Channel:
+    Type: String
+    Default: cloud-billing
+Resources:
+  NotifyBillingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: "NotifySlackToBillingLambdaPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                  - "ce:GetCostAndUsage"
+                Resource: "*"
+
+  NotifyBillingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: function.zip
+      Handler: main
+      Runtime: go1.x
+      Environment:
+        Variables:
+          SlackWebhookUrl: !Ref SlackWebhookUrl
+          TZ: !Ref TZ
+          Channel: !Ref Channel
+      Role: !GetAtt NotifyBillingRole.Arn
+      Events:
+        NotifySlack:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 0 * * ? *)
