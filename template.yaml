@@ -1,6 +1,17 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Notify Slack every day of AWS billing
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: aws-notify-billing
+    Description: send notification billing report daily to slack channel
+    Author: atatur9
+    SpdxLicenseId: Apache-2.0
+    ReadmeUrl: README.md
+    HomePageUrl: https://github.com/atatur9/aws-slack-billing
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/atatur9/aws-slack-billing
+    License: LICENSE.txt
 
 Globals:
   Function:
@@ -9,7 +20,6 @@ Globals:
 Parameters:
   SlackWebhookUrl:
     Type: String
-    Default: "https://hooks.slack.com/services/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"
   TZ:
     Type: String
     Default: Asia/Tokyo
