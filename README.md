@@ -2,7 +2,7 @@
 Notify your AWS account monthly cost to your Slack channel everyday
 
 ## Installation
-https://ap-northeast-1.console.aws.amazon.com/lambda/home?region=ap-northeast-1#/create/app?applicationId=arn:aws:serverlessrepo:ap-northeast-1:495476032358:applications/aws-notify-billing
+https://ap-northeast-1.console.aws.amazon.com/lambda/home?region=ap-northeast-1#/create/app?applicationId=arn:aws:serverlessrepo:ap-northeast-1:495476032358:applications/aws-notify-billing  
 Deploy to your AWS environment
 
 - `Channel` is the slack channel to be notified at
